@@ -11,7 +11,7 @@ function init() {
   prompt(bot)
   image(bot)
   action(bot)
-
+  bot.launch()
   process.on('exit', () => {})
   process.once('SIGINT', () => {})
   process.once('SIGTERM', () => {})
