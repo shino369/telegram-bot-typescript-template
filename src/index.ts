@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
-import { prompt, image, action } from './event/index.js'
+import fs from 'fs'
 
 dotenv.config()
 const bot = new Telegraf(process.env.TOKEN as string, {
@@ -8,9 +8,16 @@ const bot = new Telegraf(process.env.TOKEN as string, {
 })
 
 function init() {
-  prompt(bot)
-  image(bot)
-  action(bot)
+  fs.readdirSync('./build/event').forEach(async handler => {
+    if (!handler.endsWith('.js')) {
+      return
+    }
+    const module =  await import(`./event/${handler}`)
+    module.default(bot)
+  })
+  // prompt(bot)
+  // image(bot)
+  // action(bot)
   bot.launch()
   process.on('exit', () => {})
   process.once('SIGINT', () => {})
