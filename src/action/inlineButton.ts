@@ -1,9 +1,19 @@
 import Context from 'telegraf/typings/context'
 import { Update } from 'telegraf/typings/core/types/typegram'
-import { Telegraf } from 'telegraf/typings/telegraf'
+import { BotEvent, CTX } from '../types'
 
-const action = (bot: Telegraf<Context<Update>> ) => {
-  bot.action(/.+/, async ctx => {
+const INLINE_BUTTON: BotEvent = {
+  name: 'inline button',
+  type: 'action',
+  // coolTime: 5000,
+  execute: async (
+    ctx: CTX<
+      Context<Update> & {
+        match: RegExpExecArray
+      },
+      'callback_query'
+    >,
+  ) => {
     const button = ctx.match[0]
     const userId = ctx.update.callback_query.from.id
     const channelId = ctx.update.callback_query.message?.chat.id
@@ -15,7 +25,7 @@ const action = (bot: Telegraf<Context<Update>> ) => {
       text = (ctx.update.callback_query.message as any)['caption']
       const photos = (ctx.update.callback_query.message as any)['photo']
       photo = photos[photos.length - 1]
-      url = await bot.telegram.getFileLink(photo.file_id as string)
+      url = await ctx.telegram.getFileLink(photo.file_id)
     }
 
     switch (button) {
@@ -25,7 +35,7 @@ const action = (bot: Telegraf<Context<Update>> ) => {
       default:
         return ctx.reply('Button other than A is clicked')
     }
-  })
+  },
 }
 
-export default action
+export default INLINE_BUTTON

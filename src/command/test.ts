@@ -1,9 +1,12 @@
+import Context from 'telegraf/typings/context'
+import { Update } from 'telegraf/typings/core/types/typegram'
 import { BotEvent, CTX } from '../types'
 
-const event: BotEvent = {
+const COMMAND: BotEvent = {
   name: 'test',
-  coolTime: 5000,
-  execute: (ctx: CTX) => {
+  type: 'command',
+  // coolTime: 5000,
+  execute: (ctx: CTX<Context<Update>, 'text'>) => {
     const text = ctx.message.text.substring('test'.length + 1).trim()
     if (text.length > 0) {
       // do something
@@ -14,4 +17,4 @@ const event: BotEvent = {
   },
 }
 
-export default event
+export default COMMAND
