@@ -3,7 +3,7 @@ import { Update } from 'telegraf/typings/core/types/typegram'
 import { getInlinKeyboard } from '../utils/index.js'
 import { BotEvent, CTX } from '../types'
 
-const COMMAND: BotEvent = {
+const IMAGE: BotEvent = {
   name: 'image',
   type: 'filter',
   filter: {
@@ -54,4 +54,4 @@ const COMMAND: BotEvent = {
   },
 }
 
-export default COMMAND
+export default IMAGE
